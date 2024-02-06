@@ -44,4 +44,4 @@ app.*.map.json
 
 
 # Information
-/lib/resources/
+./lib/resources/
