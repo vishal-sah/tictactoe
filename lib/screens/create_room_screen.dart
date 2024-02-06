@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/responsive/responsive.dart';
+import 'package:tic_tac_toe/utilities/colors.dart';
 import 'package:tic_tac_toe/widgets/custom_button.dart';
 import 'package:tic_tac_toe/widgets/custom_text.dart';
 import 'package:tic_tac_toe/widgets/custom_textfield.dart';
@@ -26,6 +27,9 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: bgColor,
+      ),
       body: Responsive(
         child: Container(
           margin: const EdgeInsets.symmetric(
