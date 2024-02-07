@@ -45,3 +45,4 @@ app.*.map.json
 
 # Information
 ./lib/resources/
+./server/node_modules
