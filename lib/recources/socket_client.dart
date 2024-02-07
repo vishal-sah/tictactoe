@@ -1,11 +1,12 @@
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:tic_tac_toe/credentials/my_ip.dart';
 
 class SocketClient {
   IO.Socket? socket;
   static SocketClient? _instance;
 
   SocketClient._internal() {
-    socket = IO.io('http://172.31.76.140:3000', <String, dynamic>{
+    socket = IO.io(myIp, <String, dynamic>{
       'transports': ['websocket'],
       'autoconnect': false,
     });
