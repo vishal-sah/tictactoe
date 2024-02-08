@@ -17,9 +17,7 @@ const DB = "mongodb+srv://Vishal_Sah:VishalSah123@cluster0.ccxvdm9.mongodb.net/?
 io.on("connection", (socket) => {
     console.log("connected!");
 
-    socket.on("createRoom", async (data) => {
-        console.log("Received createRoom event with data:", data);
-        const { nickname } = data;
+    socket.on("createRoom", async ({nickname}) => {
         console.log("Nickname:", nickname);
 
         try {
@@ -41,6 +39,35 @@ io.on("connection", (socket) => {
             socket.join(roomId);
 
             io.to(roomId).emit("createRoomSuccess", room);
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
+    socket.on("joinRoom", async ({nickname, roomId}) => {
+        try {
+            if(!roomId.match(/^[0-9a-fA-F]{24}$/)) {
+                socket.emit('errorOccurred', 'Please enter a valid room ID.');
+                return;
+            }
+
+            let room = await Room.findById(roomId);
+            if(room.isJoin) {
+                let player = {
+                    nickname,
+                    socketId: socket.id,
+                    playerType: 'O',
+                };
+                socket.join(roomId);
+                room.players.push(player);
+                room.isJoin = false;
+                room = await room.save();
+                io.to(roomId).emit("joinRoomSuccess", room);
+                io.to(roomId).emit("updatePlayers", room.players);
+            }
+            else {
+                socket.emit('errorOccurred', 'The game is in progress, try again later.');
+            }
         } catch (error) {
             console.log(error);
         }
