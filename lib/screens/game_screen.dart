@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tic_tac_toe/provider/room_data_provider.dart';
 import 'package:tic_tac_toe/recources/socket_methods.dart';
-import 'package:tic_tac_toe/utilities/colors.dart';
 import 'package:tic_tac_toe/views/score_board.dart';
 import 'package:tic_tac_toe/views/tictactoe_board.dart';
 import 'package:tic_tac_toe/views/waiting_lobby.dart';
@@ -23,7 +22,7 @@ class _GameScreenState extends State<GameScreen> {
   void initState() {
     super.initState();
     _socketMethods.updateRoomListener(context);
-    _socketMethods.updatePlayerStateListener(context);
+    _socketMethods.updatePlayersStateListener(context);
   }
 
   @override
@@ -31,9 +30,6 @@ class _GameScreenState extends State<GameScreen> {
     RoomDataProvider roomDataProvider = Provider.of<RoomDataProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: bgColor,
-      ),
       body: roomDataProvider.roomData['isJoin']
           ? const WaitingLobby()
           : const SafeArea(
