@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:tic_tac_toe/provider/room_data_provider.dart';
+import 'package:tic_tac_toe/recources/game_methods.dart';
 import 'package:tic_tac_toe/recources/socket_client.dart';
 import 'package:tic_tac_toe/screens/game_screen.dart';
 import 'package:tic_tac_toe/utilities/utils.dart';
@@ -89,7 +90,7 @@ class SocketMethods {
       );
       roomDataProvider.updateRoomData(data['room']);
       // check winnner
-      // GameMethods().checkWinner(context, _socketClient);
+      GameMethods().checkWinner(context, _socketClient);
     });
   }
 
@@ -105,10 +106,10 @@ class SocketMethods {
     });
   }
 
-  // void endGameListener(BuildContext context) {
-  //   _socketClient.on('endGame', (playerData) {
-  //     showGameDialog(context, '${playerData['nickname']} won the game!');
-  //     Navigator.popUntil(context, (route) => false);
-  //   });
-  // }
+  void endGameListener(BuildContext context) {
+    _socketClient.on('endGame', (playerData) {
+      showGameDialog(context, '${playerData['nickname']} won the game!');
+      Navigator.popUntil(context, (route) => false);
+    });
+  }
 }
