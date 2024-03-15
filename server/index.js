@@ -97,6 +97,24 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on('winner', async ({winnerSocketId, roomId}) => {
+    try {
+      let room = await Room.findById(roomId);
+      let player = room.players.find((playerr) => playerr.socketId == winnerSocketId);
+
+      player.points += 1;
+      room = await room.save();
+
+      if(player.points >= room.maxRounds) {
+        io.emit('endGame', player);
+      }
+      else {
+        io.emit('pointIncrease', player);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  });
 });
 
 
